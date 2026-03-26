@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}My Products - E.ON System{% endblock %}
+
+{% block content %}
+
+  <div class="bg-eon-red px-4 py-3.5 mb-5">
+    <h2 class="text-white font-bold text-center text-base tracking-wide">My product</h2>
+  </div>
+
+
+  <div class="px-4 py-5">
+
+    {% if user_products %}
+      <div class="space-y-4">
+        {% for item in user_products %}
+
+        {% set already_received = item.income_logs | selectattr('income_type', 'equalto', 'product') | selectattr('created_at', 'ge', today_start) | list | length > 0 %}
+        {% set is_expired = item.expiry_date < today %}
+
+        <div class="bg-white rounded-2xl shadow-sm p-4">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex-1">
+              <div class="space-y-2">
+                <div>
+                  <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Prices</span>
+                  <p class="text-eon-red font-bold text-base">{{ item.product.price }} K</p>
+                </div>
+                <div>
+                  <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Rental time</span>
+                  <p class="text-eon-red font-bold text-sm">{{ item.rental_date.strftime('%d/%m/%Y') }}</p>
+                </div>
+                <div>
+                  <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Daily income</span>
+                  <p class="text-eon-red font-bold text-base">{{ item.daily_income }} K</p>
+                </div>
+                <div>
+                  <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Current total income</span>
+                  <p class="text-eon-red font-bold text-base">{{ "%.2f"|format(item.current_total_income) }} K</p>
+                </div>
+                <div class="flex items-center gap-3 mt-3">
+                  <div>
+                    <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Remaining term</span>
+                    <p class="text-eon-red font-bold text-sm">
+                      {% if is_expired %}
+                        Expired
+                      {% else %}
+                        {{ (item.expiry_date - today).days }}d remaining
+                      {% endif %}
+                    </p>
+                  </div>
+
+                  <!-- Receive button -->
+                  {% if is_expired %}
+                    <button disabled
+                      class="text-white text-sm font-bold px-5 py-2 rounded-xl shadow-sm opacity-40 cursor-not-allowed"
+                      style="background:#9ca3af;">
+                      Expired
+                    </button>
+                  {% elif already_received %}
+                    <button disabled
+                      class="text-white text-sm font-bold px-5 py-2 rounded-xl shadow-sm opacity-60 cursor-not-allowed"
+                      style="background:#9ca3af;">
+                      Received
+                    </button>
+                  {% else %}
+                    <form method="POST" action="{{ url_for('products.receive_income', user_product_id=item.id) }}">
+                      <button type="submit"
+                        class="btn-eon text-white text-sm font-bold px-5 py-2 rounded-xl shadow-sm">
+                        Receive
+                      </button>
+                    </form>
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Product image -->
+            <div class="w-16 h-16 bg-gray-100 rounded-xl overflow-hidden ml-3 flex-shrink-0">
+              <img src="{{ product.image }}"
+                  onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/product_default.jpg') }}'"
+                  class="w-full h-full object-cover" alt="{{ item.product.name }}">
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-16">
+        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+        </div>
+        <p class="text-gray-400 text-sm">No products yet.</p>
+        <a href="{{ url_for('products.products') }}" class="inline-block mt-4 btn-eon text-white font-semibold px-6 py-2.5 rounded-xl text-sm">Browse Products</a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

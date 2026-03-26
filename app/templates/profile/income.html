@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Income - E.ON System{% endblock %}
+
+
+{% block content %}
+    <div class="min-h-screen bg-white">
+
+        <!-- Return -->
+        <div class="return-row">
+           <span class="return-arrow">
+                <a href="{{ url_for('profile.profile') }}" 
+                class="flex items-center gap-0 text-gray-500 hover:text-eon-red transition">
+                    
+                    <img src="{{ url_for('static', filename='images/left-arrow.png') }}"
+                        onerror="this.style.display='none'"
+                        class="w-10 h-10 object-contain" 
+                        alt="Back">
+
+                    <span>Return</span>
+                </a>
+            </span>
+            
+        </div>
+
+        <!-- Product / Commissions Tabs -->
+        <div class="flex border border-gray-200 mx-4 mt-4 rounded-lg overflow-hidden mb-1">
+            <button onclick="switchTab('product')" id="tab-product"
+            class="flex-1 py-3 text-sm font-semibold transition-all"
+            style="background: white; color: #1a1a1a;">
+            Product
+            </button>
+            <button onclick="switchTab('commissions')" id="tab-commissions"
+            class="flex-1 py-3 text-sm font-semibold transition-all"
+            style="background: #f3f4f6; color: #6b7280;">
+            Commissions
+            </button>
+        </div>
+
+        <!-- Product Income Table -->
+        <div id="panel-product">
+            <table class="w-full">
+            <thead>
+                <tr class="border-b border-gray-100">
+                <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Product name</th>
+                <th class="text-left px-4 py-3 text-sm font-semibold text-blue-500">Income</th>
+                <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in product_income %}
+                <tr class="border-b border-gray-100">
+                <td class="px-4 py-4 text-sm text-gray-800">{{ entry.product_name }}</td>
+                <td class="px-4 py-4 text-sm font-semibold text-eon-red">{{ "%.2f"|format(entry.amount) }}</td>
+                <td class="px-4 py-4 text-xs text-yellow-600 font-semibold leading-snug">
+                    {{ entry.created_at.strftime('%d/%m/%Y') }}<br>
+                    {{ entry.created_at.strftime('%H:%M:%S') }}
+                </td>
+                </tr>
+                {% else %}
+                <tr>
+                <td colspan="3" class="px-4 py-10 text-center text-sm text-gray-400">No income records yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+
+        <!-- Commissions Table -->
+        <div id="panel-commissions" class="hidden">
+            <table class="w-full">
+            <thead>
+                <tr class="border-b border-gray-100">
+                <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">From</th>
+                <th class="text-left px-4 py-3 text-sm font-semibold text-blue-500">Commission</th>
+                <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in commissions %}
+                <tr class="border-b border-gray-100">
+                <td class="px-4 py-4 text-sm text-gray-800">{{ entry.from_phone }}</td>
+                <td class="px-4 py-4 text-sm font-semibold text-eon-red">{{ "%.2f"|format(entry.amount) }}</td>
+                <td class="px-4 py-4 text-xs text-yellow-600 font-semibold leading-snug">
+                    {{ entry.created_at.strftime('%d/%m/%Y') }}<br>
+                    {{ entry.created_at.strftime('%H:%M:%S') }}
+                </td>
+                </tr>
+                {% else %}
+                <tr>
+                <td colspan="3" class="px-4 py-10 text-center text-sm text-gray-400">No commission records yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+    function switchTab(tab) {
+        const productTab      = document.getElementById('tab-product');
+        const commissionsTab  = document.getElementById('tab-commissions');
+        const productPanel    = document.getElementById('panel-product');
+        const commissionsPanel = document.getElementById('panel-commissions');
+
+        if (tab === 'product') {
+        productTab.style.background    = 'white';
+        productTab.style.color         = '#1a1a1a';
+        commissionsTab.style.background = '#f3f4f6';
+        commissionsTab.style.color      = '#6b7280';
+        productPanel.classList.remove('hidden');
+        commissionsPanel.classList.add('hidden');
+        } else {
+        commissionsTab.style.background = 'white';
+        commissionsTab.style.color      = '#1a1a1a';
+        productTab.style.background    = '#f3f4f6';
+        productTab.style.color         = '#6b7280';
+        commissionsPanel.classList.remove('hidden');
+        productPanel.classList.add('hidden');
+        }
+    }
+    </script>
+{% endblock %}

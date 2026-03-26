@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Profile - E.ON System{% endblock %}
+
+{% block content %}
+<div class="pb-6">
+
+  <!-- VIP Hero Card -->
+  <div class="mx-4 mt-4 rounded-2xl overflow-hidden mb-1"
+       style="background: linear-gradient(160deg, #a8d8f0 0%, #7ec8e8 50%, #b8dff5 100%);">
+    <div class="p-4 flex items-end justify-between relative min-h-36">
+
+      <!-- Robot avatar -->
+      <div class="flex flex-col gap-1">
+        <img src="{{ url_for('static', filename='images/robot_avatar.png') }}"
+             onerror="this.style.display='none'"
+             class="w-24 h-24 object-contain" alt="Avatar">
+        <div>
+          <p class="font-black text-gray-800 text-sm">VIP Level : {{ user.vip_level }}</p>
+          <p class="text-xs text-gray-700 mt-0.5">Balances: <span class="font-bold">{{ "%.2f"|format(user.balance) }}</span></p>
+          <p class="text-xs text-gray-700">Telephone number : {{ user.phone[:3] }}****{{ user.phone[-3:] }}</p>
+        </div>
+      </div>
+
+      <!-- Agent Privileges badge -->
+      <div class="absolute top-0 right-3 flex flex-col items-center gap-1">
+        <img src="{{ url_for('static', filename='images/agent_badge.png') }}"
+             onerror="this.style.opacity='0'"
+             class="object-contain" alt="Agent Privileges" style="width: 100px; height: 100px; margin-top: -25px;">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Menu Items -->
+  <div class="mx-4">
+
+    <!-- Row 1: Recharge + Withdrawal -->
+    <div class="grid grid-cols-2 border-b border-yellow-400">
+      <a href="{{ url_for('dashboard.recharge') }}"
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition border-r border-yellow-400">
+        <img src="{{ url_for('static', filename='images/recharge.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="Recharge">
+        <span class="font-black text-gray-800 text-base">Recharge</span>
+      </a>
+      <a href="{{ url_for('withdrawal.withdrawal') }}"
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition">
+        <img src="{{ url_for('static', filename='images/withdrawal.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="Withdrawal">
+        <span class="font-black text-gray-800 text-base">Withdrawal</span>
+      </a>
+    </div>
+
+    <!-- Row 2: Billing + Gift -->
+    <div class="grid grid-cols-2 border-b border-yellow-400">
+      <a href="{{ url_for('dashboard.billing') }}"
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition border-r border-yellow-400">
+        <img src="{{ url_for('static', filename='images/bill.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="Billing">
+        <span class="font-black text-gray-800 text-base">Billing</span>
+      </a>
+      <a href="{{ url_for('profile.gift_code') }}"
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition">
+        <img src="{{ url_for('static', filename='images/Gift.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="Gift">
+        <span class="font-black text-gray-800 text-base">Gift</span>
+      </a>
+    </div>
+
+    <!-- Row 3: My Bank + Password -->
+    <div class="grid grid-cols-2 border-b border-yellow-400">
+      <a href="{{ url_for('profile.bank') }}"
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition border-r border-yellow-400">
+        <img src="{{ url_for('static', filename='images/mybank.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="My Bank">
+        <span class="font-black text-gray-800 text-base">My Bank</span>
+      </a>
+      <a href="{{ url_for('profile.change_password') }}" 
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition">
+        <img src="{{ url_for('static', filename='images/password.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="Password">
+        <span class="font-black text-gray-800 text-base">Password</span>
+      </a>
+    </div>
+
+    <!-- Row 4: Download + Customer Service -->
+    <div class="grid grid-cols-2 border-b border-yellow-400">
+      <a href="#"
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition border-r border-yellow-400">
+        <img src="{{ url_for('static', filename='images/downf.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="Download">
+        <span class="font-black text-gray-800 text-base">Download</span>
+      </a>
+      <a href="{{ url_for('profile.support') }}"
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition">
+        <img src="{{ url_for('static', filename='images/service.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="Customer Service">
+        <span class="font-black text-gray-800 text-base text-center leading-tight">Customer<br>Service</span>
+      </a>
+    </div>
+
+    <!-- Row 5: Lucky Cards (single) -->
+    <div class="border-b border-yellow-400">
+      <a href="#"
+         class="flex flex-col items-center gap-2 py-5 hover:bg-gray-50 transition w-1/2">
+        <img src="{{ url_for('static', filename='images/lucky.png') }}"
+             onerror="this.style.display='none'"
+             class="w-10 h-10 object-contain" alt="Lucky Cards">
+        <span class="font-black text-gray-800 text-base">lucky cards</span>
+      </a>
+    </div>
+
+    <!-- Close Session -->
+    <a href="{{ url_for('auth.logout') }}"
+       class="block w-full text-center font-black text-gray-800 text-lg py-5 hover:text-eon-red transition">
+      Close Session
+    </a>
+
+  </div>
+</div>
+{% endblock %}

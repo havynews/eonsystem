@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} - E.ON System{% endblock %}
+
+{% block content %}
+<!-- Red Header -->
+<div class="bg-[#dc2626] text-white px-4 py-3 flex items-center justify-between sticky top-0 z-50">
+  <!-- Back Button -->
+  <a href="{{ url_for('products.products') }}" class="text-white hover:text-white/80 transition p-1 -ml-1">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+  </a>
+  
+  <!-- Centered Title -->
+  <h1 class="text-lg font-semibold absolute left-1/2 transform -translate-x-1/2">
+    {{ product.name }}
+  </h1>
+  
+  <!-- Spacer for balance -->
+  <div class="w-6"></div>
+</div>
+
+<div class="pb-20">
+  <!-- Product Image Header -->
+  <div class="relative w-full h-72 bg-gray-100">
+    <img src="{{ product.image }}"
+         onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/product_default.jpg') }}'"
+         class="w-full h-full object-cover" alt="{{ product.name }}">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+  </div>
+
+  <!-- Product Info -->
+  <div class="px-4 py-5 bg-white">
+    <!-- Product Name -->
+    <h2 class="text-xl font-bold text-gray-900 mb-5">{{ product.name }}</h2>
+
+    <!-- Stats List -->
+    <div class="space-y-4 mb-6">
+      <div class="flex justify-between items-center">
+        <span class="text-gray-500 text-sm">Prices</span>
+        <span class="text-gray-900 font-semibold">{{ product.price }} K</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-gray-500 text-sm">Daily income</span>
+        <span class="text-gray-900 font-semibold">{{ product.daily_income }}</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-gray-500 text-sm">Validity period</span>
+        <span class="text-gray-900 font-semibold">{{ product.rental_days }}</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-gray-500 text-sm">Total revenue</span>
+        <span class="text-gray-900 font-semibold">{{ product.total_income }}</span>
+      </div>
+    </div>
+
+    <!-- Details Section with Carousel Arrows -->
+    <div class="mb-6">
+      <h3 class="text-base font-bold text-gray-900 mb-3">Details</h3>
+      <div class="flex items-center justify-between">
+        <button type="button" class="text-gray-400 hover:text-gray-600 transition p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <p class="text-sm text-gray-600 leading-relaxed flex-1 mx-3">
+          {{ product.description }}
+        </p>
+        <button type="button" class="text-gray-400 hover:text-gray-600 transition p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fixed Bottom Bar -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 flex items-center justify-between max-w-md mx-auto" style="z-index: 9999;">
+    <div class="left-content">
+      <div class="title-color mb-0" style="display: flex; flex-direction: row; align-items: center;">
+        <div>
+          <span></span>K {{ product.price }}
+        </div>
+      </div>
+    </div>
+    <!-- 2 -->
+    <a href="javascript:;" id="buy" data-form="product-form" onclick="document.getElementById('product-form').submit();" 
+       class="btn btn-solid">
+      Buy
+    </a>
+  </div>
+
+  <!-- Hidden Form -->
+  <form id="product-form" method="POST" action="{{ url_for('products.buy_product', product_id=product.id) }}" style="display: none;"></form>
+</div>
+
+<style>
+  .title-color {
+    color: #dc2626;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+  
+  .btn-solid {
+    background-color: #dc2626 !important;
+    color: white !important;
+    padding: 0.75rem 2.5rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background-color 0.2s !important;
+    border: none !important;
+    cursor: pointer !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .btn-solid:hover {
+    background-color: #b91c1c !important;
+  }
+</style>
+{% endblock %}

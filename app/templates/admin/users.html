@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+{% block title %}Users - Admin{% endblock %}
+{% block page_title %}Users{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-5">
+  <form method="GET" class="flex gap-2">
+    <input name="q" value="{{ search }}" placeholder="Search by phone..."
+           class="border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-300 w-64">
+    <button type="submit" class="px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-lg">Search</button>
+  </form>
+</div>
+<div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-100">
+      <tr>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Phone</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">VIP</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Balance</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Total Income</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Referrals</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Agent</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Joined</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-50">
+      {% for u in users %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 font-semibold text-gray-800">{{ u.phone }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ u.vip_level }}</td>
+        <td class="px-4 py-3 font-bold text-green-600">K{{ "%.2f"|format(u.balance) }}</td>
+        <td class="px-4 py-3 text-gray-600">K{{ "%.2f"|format(u.total_income) }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ u.referrals | length }}</td>
+        <td class="px-4 py-3">
+          {% if u.agent %}<span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">Yes</span>{% else %}<span class="text-gray-300 text-xs">No</span>{% endif %}
+        </td>
+        <td class="px-4 py-3 text-xs text-gray-400">{{ u.created_at.strftime('%d/%m/%y') }}</td>
+        <td class="px-4 py-3">
+          <a href="{{ url_for('admin.edit_user', user_id=u.id) }}"
+             class="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-lg hover:bg-blue-600">Edit</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8" class="px-4 py-10 text-center text-gray-400">No users found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

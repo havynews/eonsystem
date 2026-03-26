@@ -1,0 +1,218 @@
+
+{% extends "base.html" %}
+{% block title %}Products - E.ON System{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="bg-white px-4 py-3 flex items-center justify-center border-b border-gray-100">
+  <div class="flex items-center gap-2">
+    <span class="text-2xl font-bold text-red-500 italic">e.on</span>
+    <span class="text-lg font-semibold text-blue-400">E.ON-System</span>
+  </div>
+</div>
+
+<!-- Hero Carousel - Dynamic from Products -->
+{% if products %}
+<div class="relative w-full h-40 bg-gray-100 overflow-hidden" id="hero-carousel">
+  <!-- Carousel Slides -->
+  <div class="carousel-slides flex transition-transform duration-500 ease-in-out h-full" id="carousel-slides">
+    {% for product in products %}
+    {% if product.image %}
+    <div class="w-full h-full flex-shrink-0 relative">
+      <img src="{{ product.image }}"
+           class="w-full h-full object-cover" 
+           alt="{{ product.name }}">
+      <!-- Optional: Product name overlay -->
+      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent py-3 px-4">
+        <p class="text-white text-sm font-semibold">{{ product.name }}</p>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  
+</div>
+{% endif %}
+
+<!-- Product / Fund Buttons -->
+<div class="flex gap-3 px-4 py-3 bg-gray-50">
+  <button onclick="filterProducts('product')" id="btn-product"
+    class="flex-1 font-bold py-3 text-sm text-white shadow-md transition-all active-tab"
+    style="background: linear-gradient(135deg, #e2001a, #c0001a); border-radius: 5px;">
+    Product
+  </button>
+  <button onclick="filterProducts('fund')" id="btn-fund"
+    class="flex-1 font-bold py-3 text-sm text-white shadow-md transition-all"
+    style="background: linear-gradient(135deg, #e2001a, #c0001a); border-radius: 5px;">
+    Fund
+  </button>
+</div>
+
+<!-- Products List -->
+<div class="px-3 pb-20 space-y-3 bg-gray-50 min-h-screen">
+  {% for product in products %}
+  <a href="{{ url_for('products.product_detail', product_id=product.id) }}"
+     class="block bg-white rounded-xl shadow-sm overflow-hidden relative">
+    
+    <!-- VIP Badge (Image Background) -->
+    {% if product.vip_level %}
+    <div class="absolute top-2 left-2 z-10">
+      <div class="relative flex items-center justify-center px-3 py-1 text-white text-xs font-bold">
+        
+        <!-- Background Image -->
+        <img src="{{ url_for('static', filename='images/vipba.png') }}"
+             onerror="this.style.display='none'"
+             class="absolute inset-0 w-full h-full object-contain pointer-events-none"
+             alt="VIP">
+
+        <!-- Content -->
+        <span class="relative flex items-center gap-1 whitespace-nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+          VIP {{ product.vip_level }}
+        </span>
+
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="flex gap-3 p-3">
+      <!-- Product Image -->
+      <div class="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+        {% if product.image %}
+        <img src="{{ product.image }}" 
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+             class="w-full h-full object-cover" 
+             alt="{{ product.name }}">
+        {% endif %}
+        <div class="fallback w-full h-full items-center justify-center {% if product.image %}hidden{% endif %}">
+          {% if 'solar' in product.name.lower() or 'panel' in product.name.lower() or 'symn' in product.name.lower() %}
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+          {% elif 'wind' in product.name.lower() or 'turbine' in product.name.lower() %}
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m1.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+          {% elif 'lithium' in product.name.lower() or 'battery' in product.name.lower() or 'n100' in product.name.lower() %}
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          {% else %}
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="flex-1 min-w-0">
+        <h3 class="font-bold text-gray-900 text-base mb-2">{{ product.name }}</h3>
+        
+        <div class="space-y-1 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Prices:</span>
+            <span class="font-semibold text-gray-900">{{ "%.0f"|format(product.price) }} K</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Daily income:</span>
+            <span class="font-semibold text-gray-900">{{ "%.1f"|format(product.daily_income) }} K</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Cycle:</span>
+            <span class="font-semibold text-gray-900">{{ product.rental_days }} / Day</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Quantity purchased:</span>
+            <span class="font-semibold text-gray-900">1</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Total revenue:</span>
+            <span class="font-semibold text-gray-900">{{ "%.1f"|format(product.total_income) }} K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  {% else %}
+  <div class="text-center py-8">
+    <p class="text-gray-400 text-sm">No products available</p>
+  </div>
+  {% endfor %}
+</div>
+
+<style>
+  /* Carousel Styles */
+  #hero-carousel {
+    position: relative;
+  }
+  
+  .carousel-slides {
+    display: flex;
+    width: 100%;
+  }
+  
+  .indicator {
+    border: none;
+    cursor: pointer;
+  }
+  
+  .indicator.active {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    transform: scale(1.2);
+  }
+  
+  /* Pause on hover */
+  #hero-carousel:hover .carousel-slides {
+    animation-play-state: paused;
+  }
+</style>
+
+<script>
+  (function() {
+    const slides = document.getElementById('carousel-slides');
+    const allSlides = slides ? slides.querySelectorAll('.carousel-slide') : [];
+    const totalSlides = allSlides.length;
+    if (totalSlides === 0) return;
+
+    let currentSlide = 0;
+    let autoPlayInterval;
+
+    function goToSlide(index) {
+      if (index >= totalSlides) index = 0;
+      if (index < 0) index = totalSlides - 1;
+      currentSlide = index;
+      slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(() => goToSlide(currentSlide + 1), 4000);
+    }
+
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+
+    const carousel = document.getElementById('hero-carousel');
+    if (carousel) {
+      carousel.addEventListener('mouseenter', stopAutoPlay);
+      carousel.addEventListener('mouseleave', startAutoPlay);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      document.hidden ? stopAutoPlay() : startAutoPlay();
+    });
+
+    startAutoPlay();
+  })();
+
+  // Product / Fund tab filter (extend when fund products exist)
+  function filterProducts(type) {
+    document.getElementById('btn-product').style.opacity = type === 'product' ? '1' : '0.6';
+    document.getElementById('btn-fund').style.opacity   = type === 'fund'    ? '1' : '0.6';
+  }
+</script>
+{% endblock %}

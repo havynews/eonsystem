@@ -1,0 +1,66 @@
+{% extends "admin/base.html" %}
+{% block title %}Withdrawals - Admin{% endblock %}
+{% block page_title %}Withdrawals{% endblock %}
+
+{% block content %}
+<div class="flex gap-2 mb-5">
+  {% for s, label in [('', 'All'), ('pending', 'Pending'), ('approved', 'Approved'), ('declined', 'Declined')] %}
+  <a href="{{ url_for('admin.withdrawals', status=s) }}"
+     class="px-4 py-2 rounded-lg text-sm font-semibold transition
+       {% if status == s %}bg-red-600 text-white{% else %}bg-white text-gray-600 hover:bg-gray-50{% endif %}">
+    {{ label }}
+  </a>
+  {% endfor %}
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-100">
+      <tr>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">User</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Amount</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Bank</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Account</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Status</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Requested</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-50">
+      {% for w in withdrawals %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 font-semibold text-gray-800">{{ w.user.phone }}</td>
+        <td class="px-4 py-3 font-bold text-gray-800">K{{ w.amount }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ w.user.bank_name or '—' }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ w.user.account_number or '—' }}</td>
+        <td class="px-4 py-3">
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold
+            {% if w.status == 'approved' %}bg-green-100 text-green-700
+            {% elif w.status == 'declined' %}bg-red-100 text-red-700
+            {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+            {{ w.status }}
+          </span>
+        </td>
+        <td class="px-4 py-3 text-xs text-gray-400">{{ w.requested_at.strftime('%d/%m/%y %H:%M') }}</td>
+        <td class="px-4 py-3">
+          {% if w.status == 'pending' %}
+          <div class="flex gap-2">
+            <form method="POST" action="{{ url_for('admin.approve_withdrawal', withdrawal_id=w.id) }}">
+              <button type="submit" class="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-lg hover:bg-green-600">Approve</button>
+            </form>
+            <form method="POST" action="{{ url_for('admin.decline_withdrawal', withdrawal_id=w.id) }}">
+              <button type="submit" class="px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600">Decline</button>
+            </form>
+          </div>
+          {% else %}
+          <span class="text-gray-300 text-xs">—</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="px-4 py-10 text-center text-gray-400">No withdrawals found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Members - E.ON System{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#cfd6e2]">
+
+  <!-- Header -->
+  <div class="bg-white px-4 py-3 flex items-center gap-3 shadow-sm">
+    <a href="{{ url_for('dashboard.index') }}" class="text-black text-lg">⬅</a>
+    <h1 class="font-semibold text-gray-700">Return</h1>
+  </div>
+
+  <!-- Summary -->
+  <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-4">
+    <div class="flex justify-between">
+      <div>
+        <p class="text-sm">Number of Members:</p>
+        <p class="text-lg font-bold">{{ total_members }}</p>
+      </div>
+      <div class="text-right">
+        <p class="text-sm">Total income:</p>
+        <p class="text-lg font-bold">{{ total_income }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="p-3 grid grid-cols-4 gap-2 text-center">
+
+    <!-- Labels Column -->
+    <div class="space-y-2">
+      <div class="bg-blue-700 text-white py-2 rounded">Members</div>
+      <div class="bg-gray-300 py-3 rounded text-xs">Subordinate members</div>
+      <div class="bg-gray-400 py-3 rounded text-xs">Active Member</div>
+      <div class="bg-gray-300 py-3 rounded text-xs">Lease Amount</div>
+      <div class="bg-gray-400 py-3 rounded text-xs">Commission income</div>
+    </div>
+
+    <!-- Level 1 -->
+    <div class="space-y-2">
+      <div class="bg-blue-600 text-white py-2 rounded">Level 1</div>
+      <div class="bg-gray-400 py-3 rounded">{{ level1.subordinates }}</div>
+      <div class="bg-gray-500 py-3 rounded">{{ level1.active }}</div>
+      <div class="bg-gray-400 py-3 rounded">{{ level1.lease }}</div>
+      <div class="bg-gray-500 py-3 rounded">{{ level1.commission }}</div>
+    </div>
+
+    <!-- Level 2 -->
+    <div class="space-y-2">
+      <div class="bg-blue-600 text-white py-2 rounded">Level 2</div>
+      <div class="bg-gray-400 py-3 rounded">{{ level2.subordinates }}</div>
+      <div class="bg-gray-500 py-3 rounded">{{ level2.active }}</div>
+      <div class="bg-gray-400 py-3 rounded">{{ level2.lease }}</div>
+      <div class="bg-gray-500 py-3 rounded">{{ level2.commission }}</div>
+    </div>
+
+    <!-- Level 3 -->
+    <div class="space-y-2">
+      <div class="bg-blue-600 text-white py-2 rounded">Level 3</div>
+      <div class="bg-gray-400 py-3 rounded">{{ level3.subordinates }}</div>
+      <div class="bg-gray-500 py-3 rounded">{{ level3.active }}</div>
+      <div class="bg-gray-400 py-3 rounded">{{ level3.lease }}</div>
+      <div class="bg-gray-500 py-3 rounded">{{ level3.commission }}</div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

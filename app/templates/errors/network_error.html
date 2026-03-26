@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Error - Connection Lost</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .error-container {
+            text-align: center;
+            max-width: 420px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .wifi-symbol {
+            width: 100%;
+            height: 100%;
+        }
+
+        .wifi-arc {
+            fill: none;
+            stroke: #FF4D00;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            opacity: 0;
+            animation: pulse 2s infinite;
+        }
+
+        .wifi-arc:nth-child(1) { animation-delay: 0s; }
+        .wifi-arc:nth-child(2) { animation-delay: 0.2s; }
+        .wifi-arc:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .cross {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            width: 28px;
+            height: 28px;
+            background: #FF4D00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .cross::before,
+        .cross::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 2px;
+            background: white;
+        }
+
+        .cross::before { transform: rotate(45deg); }
+        .cross::after { transform: rotate(-45deg); }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #FF4D00, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .error-code {
+            display: inline-block;
+            background: rgba(255, 77, 0, 0.1);
+            border: 1px solid rgba(255, 77, 0, 0.3);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            color: #FF4D00;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #FF4D00;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #e04400;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 77, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #a0a0a0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: #FF4D00;
+            color: #FF4D00;
+        }
+
+        .tips {
+            margin-top: 24px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border-left: 2px solid #FF4D00;
+        }
+
+        .tips h3 {
+            font-size: 0.85rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tips ul {
+            list-style: none;
+            text-align: left;
+            color: #a0a0a0;
+            font-size: 0.8rem;
+        }
+
+        .tips li {
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .tips li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #FF4D00;
+            font-size: 0.75rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ff4444;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.5rem; }
+            .subtitle { font-size: 0.85rem; }
+            .icon { width: 70px; height: 70px; }
+            .cross { width: 24px; height: 24px; }
+            .cross::before, .cross::after { width: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="icon">
+            <svg class="wifi-symbol" viewBox="0 0 100 100">
+                <path class="wifi-arc" d="M50 70 Q30 50 10 30" />
+                <path class="wifi-arc" d="M50 60 Q35 45 20 30" />
+                <path class="wifi-arc" d="M50 50 Q40 40 30 30" />
+                <circle cx="50" cy="75" r="4" fill="#FF4D00" />
+            </svg>
+            <div class="cross"></div>
+        </div>
+
+        <span class="error-code">ERROR 503: SERVICE UNAVAILABLE</span>
+        
+        <h1>Connection Lost</h1>
+        
+        <p class="subtitle">
+            We're having trouble connecting to our database. This is usually due to a network issue or poor internet connection.
+        </p>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="location.reload()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+                Try Again
+            </button>
+            <a href="/" class="btn btn-secondary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Go Home
+            </a>
+        </div>
+
+        <div class="tips">
+            <h3>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Troubleshooting Tips
+            </h3>
+            <ul>
+                <li>Check your internet connection</li>
+                <li>Try refreshing the page</li>
+                <li>Wait a few moments and try again</li>
+                <li>Check if your VPN is causing issues</li>
+                <li>Contact support if the problem persists</li>
+            </ul>
+        </div>
+
+        <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span>Database connection failed</span>
+        </div>
+    </div>
+
+    <script>
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        function attemptReconnect() {
+            if (retryCount < maxRetries) {
+                retryCount++;
+                fetch('/health-check', { method: 'HEAD' })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        }
+                    })
+                    .catch(() => {});
+            }
+        }
+
+        setInterval(attemptReconnect, 10000);
+    </script>
+</body>
+</html>

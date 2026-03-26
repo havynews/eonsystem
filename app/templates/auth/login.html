@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Login - E.ON System{% endblock %}
+{% block bottom_nav %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col items-center justify-center px-6 py-12 bg-white">
+  <!-- Logo -->
+  <div class="mb-10 text-center">
+    <div class="inline-flex items-center gap-2">
+      <span class="text-5xl font-condensed" style="color:#e2001a; font-style:italic; font-weight:900; letter-spacing:-1px;">e<span style="font-size:0.75em">.</span>on</span>
+      <span class="text-lg font-bold text-gray-700 tracking-widest">E.ON-System</span>
+    </div>
+  </div>
+
+  <div class="w-full max-w-sm">
+    <p class="text-gray-500 text-sm mb-6">Welcome back. Please sign in.</p>
+
+    <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-4">
+      <div>
+        <input
+          type="text"
+          name="phone"
+          placeholder="Enter the phone number"
+          required
+          class="w-full border border-gray-200 rounded-xl px-4 py-3.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-eon-red focus:border-transparent transition"
+        />
+      </div>
+      <div>
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter a password"
+          required
+          class="w-full border border-gray-200 rounded-xl px-4 py-3.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-eon-red focus:border-transparent transition"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn-eon w-full text-white font-bold py-4 rounded-2xl text-base tracking-wide mt-2 shadow-lg shadow-red-200 transition"
+      >
+        Login
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-gray-500 mt-6">
+      Does not have account?
+      <a href="{{ url_for('auth.register') }}" class="text-eon-red font-semibold hover:underline">Registration</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

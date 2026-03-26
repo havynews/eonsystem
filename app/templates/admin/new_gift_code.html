@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+{% block title %}Generate Gift Codes - Admin{% endblock %}
+{% block page_title %}Generate Gift Codes{% endblock %}
+{% block content %}
+<div class="max-w-sm bg-white rounded-2xl shadow-sm p-6">
+  <form method="POST" class="space-y-4">
+    <div>
+      <label class="block text-xs font-semibold text-gray-500 mb-1">Amount per code (K)</label>
+      <input type="number" name="amount" step="0.01" min="0" required
+             class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-300">
+    </div>
+    <div>
+      <label class="block text-xs font-semibold text-gray-500 mb-1">How many codes to generate</label>
+      <input type="number" name="count" value="1" min="1" max="100" required
+             class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-300">
+    </div>
+    <div class="flex gap-3 pt-2">
+      <button type="submit" class="px-6 py-2.5 bg-red-600 text-white font-bold rounded-lg text-sm">Generate</button>
+      <a href="{{ url_for('admin.gift_codes') }}" class="px-6 py-2.5 bg-gray-100 text-gray-600 font-bold rounded-lg text-sm">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

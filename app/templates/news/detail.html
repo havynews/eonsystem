@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{ news.title }} - E.ON System{% endblock %}
+
+{% block content %}
+<!-- Blue Header -->
+<div class="bg-[#2563eb] text-white px-4 py-3 flex items-center justify-between sticky top-0 z-50">
+  <!-- Back Button - Now goes to news list -->
+  <a href="{{ url_for('news.list') }}" class="text-white hover:text-white/80 transition p-1 -ml-1">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+  </a>
+  
+  <!-- Centered Title (truncated) -->
+  <h1 class="text-base font-medium absolute left-1/2 transform -translate-x-1/2 truncate max-w-[70%]">
+    {{ news.title }}
+  </h1>
+  
+  <!-- Spacer for balance -->
+  <div class="w-6"></div>
+</div>
+
+<!-- Article Content -->
+<div class="px-4 py-5 bg-white min-h-screen">
+  <!-- Main Title -->
+  <h2 class="text-xl font-bold text-gray-900 mb-4">{{ news.title }}</h2>
+  
+  <!-- Article Body -->
+  <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed space-y-4">
+    {% if news.body %}
+      {{ news.body | safe }}
+    {% else %}
+      <!-- Default content if no body in database -->
+      <h3 class="text-base font-bold text-gray-900">What is solar technology?</h3>
+      <p>
+        Solar energy is the conversion of sunlight into energy. The sun's energy can be used to generate electricity or heat. Photovoltaics (PV) is used to generate electricity, and utility-scale PV systems are typically located on solar farms. Using a "local" energy source, such as the sun, takes advantage of our abundant natural resources to generate clean energy and reduces our dependence on harmful fossil fuels.
+      </p>
+      
+      <h3 class="text-base font-bold text-gray-900">What We Do</h3>
+      <p>
+        Our in-house expertise spans development, construction, and operation of solar farms. We work with leading technology partners to deliver high-performance energy solutions.
+      </p>
+      
+      <h3 class="text-base font-bold text-gray-900">Why E.ON?</h3>
+      <p>
+        Our vision is to create a world where everyone has access to affordable, zero-carbon energy. By working together with stakeholders at all levels, we are developing utility-scale solar farms that bring us closer to a clean energy future.
+      </p>
+    {% endif %}
+  </div>
+
+  <!-- News Image -->
+  <div class="mt-4">
+    {% if news.image %}
+    <div class="mb-5 overflow-hidden bg-gray-100 rounded-lg">
+      <img src="{{ url_for('static', filename='images/' + news.image) }}" 
+          onerror="this.style.display='none'"
+          class="w-full h-48 object-cover" 
+          alt="{{ news.title }}">
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Published Date -->
+  <div class="mt-8 pt-4 border-t border-gray-100">
+    <p class="text-xs text-gray-400">
+      Published: 
+      {% if news.published_at %}
+        {{ news.published_at.strftime('%d/%m/%y %H:%M') }}
+      {% else %}
+        {{ news.date }}
+      {% endif %}
+    </p>
+  </div>
+</div>
+{% endblock %}

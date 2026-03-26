@@ -1,0 +1,151 @@
+{% extends "admin/base.html" %}
+{% block title %}Products - Admin{% endblock %}
+{% block page_title %}Products{% endblock %}
+
+{% block content %}
+<div class="flex justify-end mb-4">
+  <a href="{{ url_for('admin.new_product') }}"
+     class="px-5 py-2.5 bg-red-600 text-white font-bold text-sm rounded-lg hover:bg-red-700">
+    + New Product
+  </a>
+</div>
+
+<!-- ── Desktop Table ──────────────────────────────────────────── -->
+<div class="hidden lg:block bg-white rounded-2xl shadow-sm overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-100">
+      <tr>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Image</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Name</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Price</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Daily</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Total</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Days</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">VIP</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Active</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-50">
+      {% for p in products %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3">
+          {% if p.image %}
+          <img src="{{ p.image }}" alt="{{ p.name }}"
+               class="w-12 h-12 object-cover rounded-lg border border-gray-100">
+          {% else %}
+          <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          {% endif %}
+        </td>
+        <td class="px-4 py-3 font-semibold text-gray-800">{{ p.name }}</td>
+        <td class="px-4 py-3 text-gray-700">K{{ p.price }}</td>
+        <td class="px-4 py-3 text-green-600 font-bold">K{{ p.daily_income }}</td>
+        <td class="px-4 py-3 text-gray-700">K{{ p.total_income }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ p.rental_days }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ p.vip_level or '—' }}</td>
+        <td class="px-4 py-3">
+          {% if p.is_active %}
+          <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">Yes</span>
+          {% else %}
+          <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">No</span>
+          {% endif %}
+        </td>
+        <td class="px-4 py-3">
+          <div class="flex gap-2">
+            <a href="{{ url_for('admin.edit_product', product_id=p.id) }}"
+               class="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-lg hover:bg-blue-600">Edit</a>
+            <form method="POST" action="{{ url_for('admin.delete_product', product_id=p.id) }}"
+                  onsubmit="return confirm('Deactivate this product?')">
+              <button type="submit"
+                      class="px-3 py-1 bg-red-100 text-red-600 text-xs font-bold rounded-lg hover:bg-red-200">
+                Deactivate
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="9" class="px-4 py-10 text-center text-gray-400">No products found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- ── Mobile Cards ───────────────────────────────────────────── -->
+<div class="lg:hidden space-y-3">
+  {% for p in products %}
+  <div class="bg-white rounded-2xl shadow-sm p-4">
+    <div class="flex gap-3 mb-3">
+
+      <!-- Image -->
+      {% if p.image %}
+      <img src="{{ p.image }}" alt="{{ p.name }}"
+           class="w-16 h-16 object-cover rounded-xl border border-gray-100 flex-shrink-0">
+      {% else %}
+      <div class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+      </div>
+      {% endif %}
+
+      <!-- Name + badges -->
+      <div class="flex-1 min-w-0">
+        <p class="font-bold text-gray-800 text-sm truncate">{{ p.name }}</p>
+        <div class="flex items-center gap-2 mt-1 flex-wrap">
+          {% if p.vip_level %}
+          <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-bold">VIP {{ p.vip_level }}</span>
+          {% endif %}
+          {% if p.is_active %}
+          <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">Active</span>
+          {% else %}
+          <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">Inactive</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="grid grid-cols-3 gap-2 mb-3 text-center">
+      <div class="bg-gray-50 rounded-xl py-2">
+        <p class="text-xs text-gray-400 font-semibold">Price</p>
+        <p class="font-bold text-gray-800 text-sm">K{{ p.price }}</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl py-2">
+        <p class="text-xs text-gray-400 font-semibold">Daily</p>
+        <p class="font-bold text-green-600 text-sm">K{{ p.daily_income }}</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl py-2">
+        <p class="text-xs text-gray-400 font-semibold">Days</p>
+        <p class="font-bold text-gray-800 text-sm">{{ p.rental_days }}</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-2">
+      <a href="{{ url_for('admin.edit_product', product_id=p.id) }}"
+         class="flex-1 text-center py-2.5 bg-blue-500 text-white text-sm font-bold rounded-xl hover:bg-blue-600 transition">
+        Edit
+      </a>
+      <form method="POST" action="{{ url_for('admin.delete_product', product_id=p.id) }}"
+            onsubmit="return confirm('Deactivate this product?')" class="flex-1">
+        <button type="submit"
+                class="w-full py-2.5 bg-red-50 text-red-600 text-sm font-bold rounded-xl hover:bg-red-100 transition">
+          Deactivate
+        </button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div class="bg-white rounded-2xl shadow-sm px-4 py-10 text-center text-gray-400 text-sm">
+    No products found.
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

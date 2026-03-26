@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Bank - E.ON System{% endblock %}
+
+
+
+{% block content %}
+
+    <style>
+        .return-arrow {
+            font-size: 18px;
+            color: #222;
+        }
+
+        /* ── Form container ── */
+        .form-container {
+            padding: 16px 16px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* ── Field group ── */
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .field-label {
+            font-size: 14px;
+            color: #222;
+            font-weight: 400;
+        }
+        .field-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            background: #EEF4FF;
+            font-size: 15px;
+            color: #333;
+            outline: none;
+            font-family: Arial, sans-serif;
+        }
+        .field-input.empty {
+            background: #FFFFFF;
+        }
+        .field-input:focus {
+            border-color: #999;
+        }
+
+        /* ── Confirm button ── */
+        .btn-confirm {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(180deg, #CC0000 0%, #990000 100%);
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: 400;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 6px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        .btn-confirm:active {
+            opacity: 0.9;
+        }
+    </style>
+
+    <div class="px-4 py-5">
+        <!-- Return -->
+        <div class="return-row">
+           <span class="return-arrow">
+                <a href="{{ url_for('profile.profile') }}" 
+                class="flex items-center gap-0 text-gray-500 hover:text-eon-red transition">
+                    
+                    <img src="{{ url_for('static', filename='images/left-arrow.png') }}"
+                        onerror="this.style.display='none'"
+                        class="w-10 h-10 object-contain" 
+                        alt="Back">
+
+                    <span>Return</span>
+                </a>
+            </span>
+            
+        </div>
+
+        
+        <!-- Form -->
+        <div class="form-container">
+            <form method="POST" action="{{ url_for('profile.bank') }}">
+
+                <div class="field-group">
+                <div class="field-label">Phone</div>
+                <input type="text" name="phone" class="field-input" value="{{ current_user.phone }}" readonly>
+                </div>
+
+                <div class="field-group">
+                <div class="field-label">Bank name</div>
+                <input type="text" name="bank_name" class="field-input empty" value="{{ current_user.bank_name or '' }}" placeholder="">
+                </div>
+
+                <div class="field-group">
+                <div class="field-label">Account</div>
+                <input type="text" name="account_number" class="field-input empty" value="{{ current_user.account_number or '' }}" placeholder="">
+                </div>
+
+                <div class="field-group">
+                <div class="field-label">name</div>
+                <input type="tel" name="name" class="field-input empty" value="{{ current_user.name or '' }}" placeholder="">
+                </div>
+
+                <div class="field-group">
+                <div class="field-label">Code(BSP BANK)</div>
+                <input type="text" name="bank_code" class="field-input empty" value="{{ current_user.bank_code or '' }}" placeholder="">
+                </div>
+
+                <button class="btn-confirm">confirm</button>
+
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

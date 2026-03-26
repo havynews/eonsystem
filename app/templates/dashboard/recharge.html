@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block title %}Recharge - E.ON System{% endblock %}
+
+{% block header_right %}
+<a href="{{ url_for('profile.profile') }}" class="flex items-center gap-1.5 text-gray-600 text-sm hover:text-eon-red transition">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+  Return
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 px-4 py-4">
+
+  <!-- Bank / USDT Tabs -->
+  <div class="flex rounded-lg overflow-hidden border border-gray-200 mb-5 bg-white">
+    <button onclick="switchTab('bank')" id="tab-bank"
+      class="flex-1 py-3 text-sm font-bold transition-all tab-active"
+      style="background: #e2001a; color: white;">
+      Bank
+    </button>
+    <button onclick="switchTab('usdt')" id="tab-usdt"
+      class="flex-1 py-3 text-sm font-bold transition-all"
+      style="background: white; color: #9ca3af;">
+      USDT
+    </button>
+  </div>
+
+    <!-- Select The Amount -->
+    <p class="text-sm font-semibold text-gray-700 mb-3">Select The Amount</p>
+
+    <div class="grid grid-cols-3 gap-2 mb-2">
+    {% set amounts = [100, 250, 500, 700, 2000, 5000] %}
+    {% for amount in amounts %}
+    <button onclick="selectAmount({{ amount }})"
+        data-amount="{{ amount }}"
+        class="amount-btn border border-gray-200 bg-white rounded-lg py-3 text-sm font-bold text-yellow-500 hover:border-eon-red hover:text-eon-red transition-all">
+        <span class="currency-prefix">K</span>{{ amount }}
+    </button>
+    {% endfor %}
+    </div>
+
+    <!-- K12000 alone on its own row -->
+    <div class="mb-4">
+        <button onclick="selectAmount(12000)"
+            data-amount="12000"
+            class="amount-btn border border-gray-200 bg-white rounded-lg py-3 px-5 text-sm font-bold text-yellow-500 hover:border-eon-red hover:text-eon-red transition-all">
+            <span class="currency-prefix">K</span>12000
+        </button>
+    </div>
+
+  <!-- Custom Amount Input -->
+  <div class="bg-white rounded-lg border border-gray-200 px-4 py-3 mb-5">
+    <input type="number"
+           id="custom-amount"
+           placeholder="00.00"
+           min="0"
+           step="0.01"
+           oninput="onCustomInput(this.value)"
+           class="w-full text-gray-400 text-base bg-transparent outline-none placeholder-gray-300" />
+  </div>
+
+  <!-- Recharge Method -->
+  <p class="text-sm font-semibold text-gray-700 mb-3">Recharge Method</p>
+
+  <div id="bank-methods" class="flex gap-3 mb-8">
+    <button onclick="selectMethod('bsp')" id="method-bsp"
+      class="method-btn px-5 py-2.5 rounded-lg text-sm font-bold text-white transition-all"
+      style="background: #4ab8f0;">
+      Bsp Bank
+    </button>
+    <button onclick="selectMethod('kina')" id="method-kina"
+      class="method-btn px-5 py-2.5 rounded-lg text-sm font-bold text-white transition-all"
+      style="background: #4ab8f0;">
+      Kina Bank
+    </button>
+  </div>
+
+  <div id="usdt-methods" class="hidden flex gap-3 mb-8">
+    <button onclick="selectMethod('trc20')" id="method-trc20"
+      class="method-btn px-5 py-2.5 rounded-lg text-sm font-bold text-white transition-all"
+      style="background: #4ab8f0;">
+      TRC20
+    </button>
+    <button onclick="selectMethod('erc20')" id="method-erc20"
+      class="method-btn px-5 py-2.5 rounded-lg text-sm font-bold text-white transition-all"
+      style="background: #4ab8f0;">
+      ERC20
+    </button>
+  </div>
+
+  <!-- Confirm Button -->
+  <div class="flex justify-center">
+    <form method="POST" action="{{ url_for('dashboard.recharge') }}" class="w-full max-w-xs">
+      <input type="hidden" name="amount" id="final-amount" value="">
+      <input type="hidden" name="method" id="final-method" value="">
+      <input type="hidden" name="tab"    id="final-tab"    value="bank">
+      <button type="submit"
+        class="w-full text-white font-bold py-4 rounded-full text-base shadow-lg transition active:scale-95"
+        style="background: linear-gradient(135deg, #e2001a, #b0001a);">
+        Confirm
+      </button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+  let selectedAmount = null;
+  let selectedMethod = null;
+  let activeTab      = 'bank';
+
+  function switchTab(tab) {
+    activeTab = tab;
+
+    const bankTab  = document.getElementById('tab-bank');
+    const usdtTab  = document.getElementById('tab-usdt');
+    const bankMeth = document.getElementById('bank-methods');
+    const usdtMeth = document.getElementById('usdt-methods');
+
+    if (tab === 'bank') {
+      bankTab.style.background  = '#e2001a';
+      bankTab.style.color       = 'white';
+      usdtTab.style.background  = 'white';
+      usdtTab.style.color       = '#9ca3af';
+      bankMeth.classList.remove('hidden');
+      usdtMeth.classList.add('hidden');
+    } else {
+      usdtTab.style.background  = '#e2001a';
+      usdtTab.style.color       = 'white';
+      bankTab.style.background  = 'white';
+      bankTab.style.color       = '#9ca3af';
+      usdtMeth.classList.remove('hidden');
+      bankMeth.classList.add('hidden');
+    }
+
+    // Show K prefix for Bank, hide for USDT
+    document.querySelectorAll('.currency-prefix').forEach(el => {
+      el.style.display = tab === 'bank' ? 'inline' : 'none';
+    });
+
+    // Reset method and form tab value
+    selectedMethod = null;
+    document.querySelectorAll('.method-btn').forEach(b => b.style.background = '#4ab8f0');
+    document.getElementById('final-tab').value = tab;
+  }
+
+  function selectAmount(amount) {
+    selectedAmount = amount;
+
+    // Highlight selected button
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+      if (parseInt(btn.dataset.amount) === amount) {
+        btn.style.borderColor = '#4ab8f0';
+        btn.style.color       = '#fff5f5';
+        btn.style.background  = '#2196c8';
+      } else {
+        btn.style.borderColor = '#e5e7eb';
+        btn.style.color       = '#eab308';
+        btn.style.background  = 'white';
+      }
+    });
+
+    // Sync to input and hidden field
+    document.getElementById('custom-amount').value = amount + '.00';
+    document.getElementById('final-amount').value  = amount;
+  }
+
+  function onCustomInput(val) {
+    selectedAmount = val;
+    document.getElementById('final-amount').value = val;
+
+    // Deselect preset buttons
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+      btn.style.borderColor = '#e5e7eb';
+      btn.style.color       = '#eab308';
+      btn.style.background  = 'white';
+    });
+  }
+
+  function selectMethod(method) {
+    selectedMethod = method;
+    document.getElementById('final-method').value = method;
+
+    document.querySelectorAll('.method-btn').forEach(btn => {
+      btn.style.background = '#4ab8f0';
+    });
+    document.getElementById('method-' + method).style.background = '#2196c8';
+  }
+</script>
+{% endblock %}

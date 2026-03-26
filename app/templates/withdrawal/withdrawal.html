@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Withdrawal - E.ON System{% endblock %}
+
+{% block header_right %}
+<a href="{{ url_for('profile.profile') }}" class="text-gray-500 hover:text-eon-red transition">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+</a>
+{% endblock %}
+
+{% block content %}
+  <!-- Balance Banner -->
+  <div class="bg-eon-red px-5 py-4 mb-6 flex items-center justify-between shadow-lg">
+    <span class="text-white font-semibold text-sm">Balances</span>
+    <span class="text-white font-black text-lg">K {{ "%.2f"|format(user.balance) }}</span>
+  </div>
+<div class="px-4 py-5">
+  
+
+  <!-- Withdrawal Form -->
+  <div class="bg-white rounded-2xl shadow-sm p-5">
+    <form method="POST" action="{{ url_for('withdrawal.withdrawal') }}" class="space-y-5">
+      <!-- Phone / Account number -->
+      <!-- <div>
+        <div class="border border-gray-100 rounded-xl px-4 py-3.5 bg-gray-50 text-sm text-gray-700 font-semibold">
+          {{ user.phone }}
+        </div>
+      </div> -->
+
+      <!-- Amount -->
+      <div>
+        <input
+          type="number"
+          name="amount"
+          placeholder="Enter the withdrawal amount (not less than K70)"
+          min="70"
+          step="0.01"
+          required
+          class="w-full border border-gray-200 rounded-xl px-4 py-3.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-eon-red transition"
+        />
+        <p class=" mt-1.5 pl-1">Enter the withdrawal amount (Not less than K70)</p>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter your account password"
+          required
+          class="w-full border border-gray-200 rounded-xl px-4 py-3.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-eon-red transition"
+        />
+        <p class=" mt-1.5 pl-1">Enter your account password</p>
+      </div>
+
+      <button
+        type="submit"
+        class="btn-eon w-full text-white font-bold py-4 rounded-2xl text-base tracking-wide shadow-lg shadow-red-200 transition mt-2"
+      >
+        Confirm
+      </button>
+    </form>
+  </div>
+
+  <!-- Info Notes -->
+  <div class="mt-5 bg-yellow-50 border border-yellow-100 rounded-2xl p-4">
+    <h4 class="text-sm font-bold text-yellow-700 mb-2">Withdrawal Notes</h4>
+    <ul class="text-xs text-yellow-600 space-y-1 list-disc list-inside">
+      <li>Minimum withdrawal amount is K70</li>
+      <li>Withdrawals are processed within 24 hours</li>
+      <li>Ensure your bank details are up to date</li>
+      <li>Contact support if you face any issues</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

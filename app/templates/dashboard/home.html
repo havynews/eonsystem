@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% block title %}Home - E.ON System{% endblock %}
+
+{% block content %}
+
+  <style>
+    /* Marquee Container */
+    .announcement-bar {
+        background: #fefce8;
+        border-bottom: 1px solid #fef08a;
+        height: 3.5rem;
+        overflow: hidden;
+        position: relative;
+        margin: 0.5rem 0 1.3rem 0;
+    }
+
+    /* The scrolling list */
+    .marquee-list {
+        list-style: none;
+        animation: scroll-up 36s linear infinite;
+    }
+
+    /*.marquee-list:hover {
+        animation-play-state: paused;
+    }*/
+
+    /* Individual items */
+    .marquee-item {
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1.5rem;
+        font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+        font-weight: 500;
+        color: #92400e;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 480px) {
+        .marquee-item {
+            white-space: normal;
+            text-align: center;
+            line-height: 1.3;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* Smooth infinite scroll animation */
+    @keyframes scroll-up {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-50%);
+        }
+    }
+
+    /* Pause on hover */
+    .announcement-bar:hover .marquee-list {
+        animation-play-state: paused;
+    }
+  </style>
+  <div class="pb-4">
+              
+            
+
+    <!-- Marquee Announcement Bar -->
+    <div class="announcement-bar">
+        <ul class="marquee-list">
+            <li class="marquee-item">🎉 Congratulations to 73XXXX357 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <li class="marquee-item">🎉 Congratulations to 81XXXX204 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 67XXXX891 for successfully upgrading to VIP1 and receiving 800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 94XXXX116 for successfully upgrading to VIP4 and receiving 5200K.</li>
+            <li class="marquee-item">🎉 Congratulations to 55XXXX743 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 62XXXX389 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <li class="marquee-item">🎉 Congratulations to 78XXXX027 for successfully upgrading to VIP1 and receiving 800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 49XXXX651 for successfully upgrading to VIP5 and receiving 9800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 83XXXX472 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 71XXXX938 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <li class="marquee-item">🎉 Congratulations to 58XXXX215 for successfully upgrading to VIP4 and receiving 5200K.</li>
+            <li class="marquee-item">🎉 Congratulations to 96XXXX784 for successfully upgrading to VIP1 and receiving 800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 64XXXX563 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 87XXXX341 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <li class="marquee-item">🎉 Congratulations to 52XXXX097 for successfully upgrading to VIP5 and receiving 9800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 79XXXX628 for successfully upgrading to VIP4 and receiving 5200K.</li>
+            <li class="marquee-item">🎉 Congratulations to 43XXXX815 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 91XXXX476 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <!-- Duplicates for seamless loop -->
+            <li class="marquee-item">🎉 Congratulations to 73XXXX357 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <li class="marquee-item">🎉 Congratulations to 81XXXX204 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 67XXXX891 for successfully upgrading to VIP1 and receiving 800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 94XXXX116 for successfully upgrading to VIP4 and receiving 5200K.</li>
+            <li class="marquee-item">🎉 Congratulations to 55XXXX743 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 62XXXX389 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <li class="marquee-item">🎉 Congratulations to 78XXXX027 for successfully upgrading to VIP1 and receiving 800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 49XXXX651 for successfully upgrading to VIP5 and receiving 9800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 83XXXX472 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 71XXXX938 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <li class="marquee-item">🎉 Congratulations to 58XXXX215 for successfully upgrading to VIP4 and receiving 5200K.</li>
+            <li class="marquee-item">🎉 Congratulations to 96XXXX784 for successfully upgrading to VIP1 and receiving 800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 64XXXX563 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 87XXXX341 for successfully upgrading to VIP3 and receiving 2700K.</li>
+            <li class="marquee-item">🎉 Congratulations to 52XXXX097 for successfully upgrading to VIP5 and receiving 9800K.</li>
+            <li class="marquee-item">🎉 Congratulations to 79XXXX628 for successfully upgrading to VIP4 and receiving 5200K.</li>
+            <li class="marquee-item">🎉 Congratulations to 43XXXX815 for successfully upgrading to VIP2 and receiving 1500K.</li>
+            <li class="marquee-item">🎉 Congratulations to 91XXXX476 for successfully upgrading to VIP3 and receiving 2700K.</li>
+        </ul>
+    </div>
+
+    <!-- Hero Section: Quick Actions + Banner Image -->
+    <div class="flex gap-0 mb-0">
+
+      <!-- Left: Action Menu -->
+      <div class="flex flex-col gap-0 w-2/5 border-r border-gray-100">
+
+        <a href="{{ url_for('dashboard.recharge') }}" class="flex flex-col items-center gap-2 p-4 bg-white border-b border-gray-100 hover:bg-blue-50 transition">
+          <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center">
+            <img src="{{ url_for('static', filename='images/recharge.png') }}"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                class="w-10 h-10 object-contain" alt="Recharge">
+            <div style="display:none" class="w-10 h-10 items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+          <span class="text-xs font-semibold text-gray-700">Recharge</span>
+        </a>
+
+        <a href="{{ url_for('withdrawal.withdrawal') }}" class="flex flex-col items-center gap-2 p-4 bg-white border-b border-gray-100 hover:bg-blue-50 transition">
+          <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center">
+            <img src="{{ url_for('static', filename='images/withdrawal.png') }}"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                class="w-10 h-10 object-contain" alt="Withdrawals">
+            <div style="display:none" class="w-10 h-10 items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+            </div>
+          </div>
+          <span class="text-xs font-semibold text-gray-700">Withdrawals</span>
+        </a>
+
+        <a href="{{ url_for('dashboard.members') }}" class="flex flex-col items-center gap-2 p-4 bg-white border-b border-gray-100 hover:bg-blue-50 transition">
+          <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center">
+            <img src="{{ url_for('static', filename='images/members.png') }}"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                class="w-10 h-10 object-contain" alt="Members">
+            <div style="display:none" class="w-10 h-10 items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+          </div>
+          <span class="text-xs font-semibold text-gray-700">Members</span>
+        </a>
+
+        <a href="{{ url_for('profile.income') }}" class="flex flex-col items-center gap-2 p-4 bg-white hover:bg-blue-50 transition">
+          <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center">
+            <img src="{{ url_for('static', filename='images/income.png') }}"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                class="w-10 h-10 object-contain" alt="Data">
+            <div style="display:none" class="w-10 h-10 items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+            </div>
+          </div>
+          <span class="text-xs font-semibold text-gray-700">Income</span>
+        </a>
+
+      </div>
+
+      <!-- Right: Hero Banner Image -->
+      <div class="w-3/5 relative overflow-hidden" style="min-height: 320px;">
+        <video class="w-full h-full object-cover" style="min-height: 320px;"
+        autoplay muted loop playsinline>
+          <source src="{{ url_for('static', filename='images/222111.mp4') }}" type="video/mp4">
+          <source src="{{ url_for('static', filename='videos/hero_banner.webm') }}" type="video/webm">
+        </video>
+        <!-- Overlay badge -->
+        <div class="absolute bottom-3 left-3 bg-eon-red text-white text-xs font-bold px-3 py-1 rounded-full">
+          Fascinating challenges
+        </div>
+        <div class="absolute bottom-3 right-3 bg-eon-red text-white text-xs font-bold px-3 py-1 rounded-lg">
+          E.ON
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="px-4 pt-5 pb-2">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-black text-gray-900 text-lg">Products</h3>
+        <a href="{{ url_for('products.products') }}" class="text-sm text-gray-500 font-semibold hover:text-eon-red transition">Show all</a>
+      </div>
+
+      <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x">
+        {% for product in products %}
+        <a href="{{ url_for('products.product_detail', product_id=product.id) }}"
+          class="flex-shrink-0 w-44 bg-white rounded-2xl overflow-hidden shadow-sm card-hover snap-start">
+          <!-- Product Image -->
+          <div class="h-32 overflow-hidden bg-gray-100">
+            <img src="{{ product.image }}"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                class="w-full h-full object-cover" alt="{{ product.name }}">
+            <div style="display:none" class="w-full h-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          </div>
+          <!-- Product Name -->
+          <div class="px-2 pt-2 pb-1">
+            <p class="text-xs font-bold text-gray-800 truncate">{{ product.name }}</p>
+          </div>
+          <!-- Price / Income Card -->
+          <div class="mx-2 mb-2 bg-red-300 rounded-xl px-3 py-2 text-center">
+            <p class="text-xs text-white font-semibold">Prices:</p>
+            <p class="text-sm text-white font-black">{{ product.price }}K</p>
+            <p class="text-xs text-white font-semibold mt-1">Income:</p>
+            <p class="text-sm text-white font-black">{{ product.total_income }}K</p>
+          </div>
+        </a>
+        {% else %}
+        <p class="text-sm text-gray-400 py-4">No products available.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Public Information Section -->
+    <div class="px-4 pt-2">
+      <h3 class="font-black text-gray-900 text-lg mb-3">Public information</h3>
+      <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x">
+        {% for item in news %}
+        <a href="{{ url_for('news.detail', news_id=item.id) }}" class="bg-white rounded-2xl overflow-hidden shadow-sm flex-shrink-0 w-44 card-hover snap-start">
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm flex-shrink-0 w-44 card-hover snap-start">
+            <div class="h-28 overflow-hidden bg-gray-100">
+              <img src="{{ item.image }}" 
+                  onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                  class="w-full h-full object-cover" alt="{{ item.title }}">
+              <div style="display:none" class="w-full h-full items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300">
+                {% if loop.index == 1 %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                {% elif loop.index == 2 %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m1.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                {% else %}
+                <span class="text-3xl font-condensed font-black text-eon-red opacity-40">e.on</span>
+                {% endif %}
+              </div>
+            </div>
+            <div class="p-3">
+              <p class="text-xs font-semibold text-gray-800 leading-snug mb-1">{{ item.title }}</p>
+              <p class="text-xs text-gray-400">
+                {% if item.published_at %}
+                  {{ item.published_at.strftime('%d/%m/%y %H:%M:%S') }}
+                {% else %}
+                  {{ item.date }}
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+
+{% endblock %}

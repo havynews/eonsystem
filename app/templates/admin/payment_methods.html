@@ -1,0 +1,42 @@
+{% extends "admin/base.html" %}
+{% block title %}Payment Methods - Admin{% endblock %}
+{% block page_title %}Payment Methods{% endblock %}
+{% block content %}
+<div class="flex justify-end mb-4">
+  <a href="{{ url_for('admin.new_payment_method') }}" class="px-5 py-2.5 bg-red-600 text-white font-bold text-sm rounded-lg">+ Add Method</a>
+</div>
+<div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-100">
+      <tr>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Name</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Tab</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Key</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Details</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Active</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-50">
+      {% for m in methods %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 font-semibold text-gray-800">{{ m.display_name }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ m.tab.upper() }}</td>
+        <td class="px-4 py-3 font-mono text-xs text-gray-500">{{ m.method_key }}</td>
+        <td class="px-4 py-3 text-xs text-gray-500">
+          {% if m.tab == 'bank' %}{{ m.operator }} · {{ m.account_number }}
+          {% else %}{{ (m.wallet_address or '')[:20] }}...{% endif %}
+        </td>
+        <td class="px-4 py-3">
+          {% if m.is_active %}<span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">Yes</span>
+          {% else %}<span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">No</span>{% endif %}
+        </td>
+        <td class="px-4 py-3">
+          <a href="{{ url_for('admin.edit_payment_method', method_id=m.id) }}" class="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-lg">Edit</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if method else 'New' }} Payment Method - Admin{% endblock %}
+{% block page_title %}{{ 'Edit' if method else 'New' }} Payment Method{% endblock %}
+{% block content %}
+<div class="max-w-lg bg-white rounded-2xl shadow-sm p-6">
+  <form method="POST" class="space-y-4">
+    <div>
+      <label class="block text-xs font-semibold text-gray-500 mb-1">Tab</label>
+      <select name="tab" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none">
+        <option value="bank" {% if method and method.tab == 'bank' %}selected{% endif %}>Bank</option>
+        <option value="usdt" {% if method and method.tab == 'usdt' %}selected{% endif %}>USDT</option>
+      </select>
+    </div>
+    {% if not method %}
+    <div>
+      <label class="block text-xs font-semibold text-gray-500 mb-1">Method Key (unique, e.g. bsp, trc20)</label>
+      <input type="text" name="method_key" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-300">
+    </div>
+    {% endif %}
+    {% for label, name, val in [
+      ('Display Name', 'display_name', method.display_name if method else ''),
+      ('Operator (Bank only)', 'operator', method.operator if method else ''),
+      ('Account Name (Bank only)', 'account_name', method.account_name if method else ''),
+      ('Account Number (Bank only)', 'account_number', method.account_number if method else ''),
+      ('Code (Bank only)', 'code', method.code if method else ''),
+      ('Wallet Address (USDT only)', 'wallet_address', method.wallet_address if method else ''),
+    ] %}
+    <div>
+      <label class="block text-xs font-semibold text-gray-500 mb-1">{{ label }}</label>
+      <input type="text" name="{{ name }}" value="{{ val }}"
+             class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-300">
+    </div>
+    {% endfor %}
+    <label class="flex items-center gap-2 text-sm font-semibold text-gray-600 cursor-pointer">
+      <input type="checkbox" name="is_active" {% if not method or method.is_active %}checked{% endif %} class="rounded">
+      Active
+    </label>
+    <div class="flex gap-3 pt-2">
+      <button type="submit" class="px-6 py-2.5 bg-red-600 text-white font-bold rounded-lg text-sm hover:bg-red-700">Save</button>
+      <a href="{{ url_for('admin.payment_methods') }}" class="px-6 py-2.5 bg-gray-100 text-gray-600 font-bold rounded-lg text-sm">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

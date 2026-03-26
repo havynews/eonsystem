@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% block title %}Income - Admin{% endblock %}
+{% block page_title %}Income Logs{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-5">
+  <div class="flex gap-2">
+    {% for t, label in [('', 'All'), ('product', 'Product'), ('commission', 'Commission')] %}
+    <a href="{{ url_for('admin.income', type=t) }}"
+       class="px-4 py-2 rounded-lg text-sm font-semibold transition {% if income_type == t %}bg-red-600 text-white{% else %}bg-white text-gray-600{% endif %}">
+      {{ label }}
+    </a>
+    {% endfor %}
+  </div>
+  <a href="{{ url_for('admin.add_income') }}" class="px-5 py-2.5 bg-red-600 text-white font-bold text-sm rounded-lg">+ Add Income</a>
+</div>
+<div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-100">
+      <tr>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">User</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Product</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Amount</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Type</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">From</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500">Date</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-50">
+      {% for log in logs %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 font-semibold text-gray-800">{{ log.user.phone }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ log.product_name }}</td>
+        <td class="px-4 py-3 font-bold text-green-600">K{{ "%.2f"|format(log.amount) }}</td>
+        <td class="px-4 py-3">
+          <span class="text-xs px-2 py-0.5 rounded-full font-bold {% if log.income_type == 'commission' %}bg-purple-100 text-purple-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+            {{ log.income_type }}
+          </span>
+        </td>
+        <td class="px-4 py-3 text-gray-500 text-xs">{{ log.from_phone or '—' }}</td>
+        <td class="px-4 py-3 text-xs text-gray-400">{{ log.created_at.strftime('%d/%m/%y %H:%M') }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="px-4 py-10 text-center text-gray-400">No income logs found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

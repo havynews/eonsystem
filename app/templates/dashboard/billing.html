@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Billing - E.ON System{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100">
+
+  <!-- Header -->
+  <div class="bg-white px-4 py-3 flex items-center gap-3 shadow-sm">
+    <a href="{{ url_for('dashboard.index') }}" class="text-black text-lg">⬅</a>
+    <h1 class="font-semibold text-gray-700">Return</h1>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex mx-4 mt-4 rounded overflow-hidden">
+    <button onclick="switchTab('recharge')" id="tab-recharge"
+      class="flex-1 py-2 text-white font-semibold bg-blue-500">
+      Recharge
+    </button>
+    <button onclick="switchTab('withdrawals')" id="tab-withdrawals"
+      class="flex-1 py-2 bg-gray-300 text-gray-600">
+      Withdrawals
+    </button>
+  </div>
+
+  <!-- Recharge List -->
+  <div id="recharge-list" class="px-4 mt-4 space-y-3">
+    {% for tx in recharge_tx %}
+    <div class="bg-white p-4 rounded shadow-sm flex justify-between items-center">
+      <div>
+        <p class="font-medium text-gray-800">{{ tx.title }}</p>
+        <p class="text-xs text-gray-500">
+          {{ tx.created_at.strftime('%d/%m/%y %H:%M') }}
+        </p>
+      </div>
+      <div class="font-semibold text-green-600">
+        +{{ tx.amount }}
+      </div>
+    </div>
+    {% else %}
+    <p class="text-center text-gray-400">No recharge records</p>
+    {% endfor %}
+  </div>
+
+  <!-- Withdrawal List -->
+  <div id="withdrawal-list" class="hidden px-4 mt-4 space-y-3">
+    {% for tx in withdrawal_tx %}
+    <div class="bg-white p-4 rounded shadow-sm flex justify-between items-center">
+      <div>
+        <p class="font-medium text-gray-800">{{ tx.title }}</p>
+        <p class="text-xs text-gray-500">
+          {{ tx.created_at.strftime('%d/%m/%y %H:%M') }}
+        </p>
+      </div>
+      <div class="font-semibold text-red-600">
+        -{{ tx.amount }}
+      </div>
+    </div>
+    {% else %}
+    <p class="text-center text-gray-400">No withdrawal records</p>
+    {% endfor %}
+  </div>
+
+</div>
+
+
+<script>
+    function switchTab(tab) {
+    const rechargeTab = document.getElementById('tab-recharge');
+    const withdrawalTab = document.getElementById('tab-withdrawals');
+
+    const rechargeList = document.getElementById('recharge-list');
+    const withdrawalList = document.getElementById('withdrawal-list');
+
+    if (tab === 'recharge') {
+        rechargeList.classList.remove('hidden');
+        withdrawalList.classList.add('hidden');
+
+        rechargeTab.classList.add('bg-blue-500', 'text-white');
+        rechargeTab.classList.remove('bg-gray-300', 'text-gray-600');
+
+        withdrawalTab.classList.remove('bg-blue-500', 'text-white');
+        withdrawalTab.classList.add('bg-gray-300', 'text-gray-600');
+    } else {
+        withdrawalList.classList.remove('hidden');
+        rechargeList.classList.add('hidden');
+
+        withdrawalTab.classList.add('bg-blue-500', 'text-white');
+        withdrawalTab.classList.remove('bg-gray-300', 'text-gray-600');
+
+        rechargeTab.classList.remove('bg-blue-500', 'text-white');
+        rechargeTab.classList.add('bg-gray-300', 'text-gray-600');
+    }
+    }
+</script>
+{% endblock %}

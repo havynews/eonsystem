@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}E.ON System{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            eon: {
+              red: '#e2001a',
+              dark: '#b0001a',
+              yellow: '#f5c400',
+              gray: '#f2f2f2',
+              text: '#1a1a1a',
+            }
+          },
+          fontFamily: {
+            sans: ['Barlow', 'sans-serif'],
+            condensed: ['Barlow Condensed', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Barlow', sans-serif; background: #f5f5f5; }
+    .eon-logo span.e { color: #e2001a; font-style: italic; font-weight: 800; }
+    .eon-logo span.on { color: #e2001a; font-style: italic; font-weight: 800; }
+    .eon-logo span.dot { color: #e2001a; font-style: italic; font-weight: 800; }
+    .nav-active { color: #2196c8 !important; }
+    .nav-active svg { stroke: #2196c8; }
+    .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
+    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(226,0,26,0.15); }
+    .btn-eon { background: linear-gradient(135deg, #e2001a, #b0001a); }
+    .btn-eon:hover { background: linear-gradient(135deg, #b0001a, #8a0012); }
+    .flash-error { background: #fee2e2; border-left: 4px solid #e2001a; color: #991b1b; }
+    .flash-success { background: #dcfce7; border-left: 4px solid #16a34a; color: #166534; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col bg-gray-100">
+
+  <!-- Top Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="{{ url_for('dashboard.home') }}" class="eon-logo flex items-center gap-1">
+        <span class="text-2xl font-condensed"><span class="e">e</span><span class="dot">.</span><span class="on">on</span></span>
+        <span class="text-sm font-bold text-gray-700 ml-1 tracking-wide">E.ON-System</span>
+      </a>
+      {% block header_right %}{% endblock %}
+    </div>
+  </header>
+
+  <!-- Flash Messages -->
+  <div class="max-w-md mx-auto w-full px-4 pt-2">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+        <div class="flash-{{ category }} rounded-lg px-4 py-3 mb-2 text-sm font-medium">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-md mx-auto w-full pb-24">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Bottom Navigation (only when logged in) -->
+  {% block bottom_nav %}
+  {% if current_user.is_authenticated %}
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+    <div class="max-w-md mx-auto flex items-center justify-around py-2">
+      <a href="{{ url_for('products.products') }}" class="flex flex-col items-center gap-0.5 px-3 py-1 {% if request.endpoint == 'products.products' %}nav-active{% else %}text-gray-500{% endif %}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+        <span class="text-xs font-semibold">Products</span>
+      </a>
+      <a href="{{ url_for('share.share') }}" class="flex flex-col items-center gap-0.5 px-3 py-1 {% if request.endpoint == 'share.share' %}nav-active{% else %}text-gray-500{% endif %}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+        <span class="text-xs font-semibold">Share</span>
+      </a>
+      <a href="{{ url_for('dashboard.home') }}" class="flex flex-col items-center gap-0.5 px-3 py-1 {% if request.endpoint == 'dashboard.home' %}nav-active{% else %}text-gray-500{% endif %}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span class="text-xs font-semibold">Home</span>
+      </a>
+      <a href="{{ url_for('products.my_products') }}" class="flex flex-col items-center gap-0.5 px-3 py-1 {% if request.endpoint == 'products.my_products' %}nav-active{% else %}text-gray-500{% endif %}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+        <span class="text-xs font-semibold">My Products</span>
+      </a>
+      <a href="{{ url_for('profile.profile') }}" class="flex flex-col items-center gap-0.5 px-3 py-1 {% if 'profile' in request.endpoint %}nav-active{% else %}text-gray-500{% endif %}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <span class="text-xs font-semibold">Me</span>
+      </a>
+    </div>
+  </nav>
+  {% endif %}
+  {% endblock %}
+</body>
+</html>
