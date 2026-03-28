@@ -77,7 +77,7 @@
 
             <!-- Product image -->
             <div class="w-16 h-16 bg-gray-100 rounded-xl overflow-hidden ml-3 flex-shrink-0">
-              <img src="{{ product.image }}"
+              <img src="{{ item.product.image }}"
                   onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/product_default.jpg') }}'"
                   class="w-full h-full object-cover" alt="{{ item.product.name }}">
             </div>
